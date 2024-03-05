@@ -1,0 +1,420 @@
+openapi: 3.0.0
+info:
+  title: MUIC CS Internship Backend API
+  description: API documentation for a site that allows MUIC computer science students to post and find internships.
+  version: 1.0.0
+paths:
+  /internships:
+    get:
+      summary: Retrieve all internships
+      tags:
+        - Internship
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: A list of internships
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Internship'
+  /internships/create_internship:
+    post:
+      summary: Create a new internship
+      tags:
+        - Internship
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Internship'
+      responses:
+        '201':
+          description: Internship created successfully
+        '400':
+          description: Invalid request body
+  /internships/{id}:
+    get:
+      summary: Retrieve an internship by ID
+      tags:
+        - Internship
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the internship to retrieve
+          schema:
+            type: integer
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Retrieved internship
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Internship'
+        '404':
+          description: Internship not found
+    put:
+      summary: Update an internship
+      tags:
+        - Internship
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the internship to update
+          schema:
+            type: integer
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Internship'
+      responses:
+        '200':
+          description: Internship updated successfully
+        '400':
+          description: Invalid request body
+        '404':
+          description: Internship not found
+    delete:
+      summary: Delete an internship
+      tags:
+        - Internship
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the internship to delete
+          schema:
+            type: integer
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '204':
+          description: Internship deleted successfully
+        '404':
+          description: Internship not found
+  /internships/flag/{id}:
+    post:
+      summary: Flag an internship
+      tags:
+        - Internship
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the internship to flag
+          schema:
+            type: integer
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Internship flagged successfully
+        '404':
+          description: Internship not found
+  /internships/time_period/{time_period_id}:
+    get:
+      summary: Retrieve all internships for a given time period
+      tags:
+        - Internship
+      parameters:
+        - in: path
+          name: time_period_id
+          required: true
+          description: ID of the time period to retrieve internships for
+          schema:
+            type: integer
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: A list of internships for the given time period
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Internship'
+        '404':
+          description: Time period not found
+  /users/register:
+    post:
+      summary: Register a new user
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User registered successfully
+        '400':
+          description: Invalid request body
+  /users/login:
+    post:
+      summary: Log in a user
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User logged in successfully
+        '401':
+          description: Unauthorized - invalid credentials
+  /users/logout:
+    post:
+      summary: Log out the current user
+      tags:
+        - User
+      responses:
+        '200':
+          description: User logged out successfully
+  /users/get_current_user:
+    get:
+      summary: Get current user information
+      tags:
+        - User
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Current user information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized - user not logged in
+  /users/edit_profile:
+    put:
+      summary: Edit current user's profile
+      tags:
+        - User
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User profile updated successfully
+        '400':
+          description: Invalid request body
+        '401':
+          description: Unauthorized - user not logged in
+  /admin/statistics:
+    get:
+      summary: Get statistics (for admin)
+      tags:
+        - Admin
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Statistics retrieved successfully
+  /admin/delete_user/{user_id}:
+    delete:
+      summary: Delete a user (for admin)
+      tags:
+        - Admin
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          description: ID of the user to delete
+          schema:
+            type: integer
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '204':
+          description: User deleted successfully
+        '404':
+          description: User not found
+  /admin/flagged_internships:
+    get:
+      summary: View flagged internships (for admin)
+      tags:
+        - Admin
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Flagged internships retrieved successfully
+  /admin/delete_internship/{id}:
+    delete:
+      summary: Delete an internship (for admin)
+      tags:
+        - Admin
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the internship to delete
+          schema:
+            type: integer
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '204':
+          description: Internship deleted successfully
+        '404':
+          description: Internship not found
+  /admin/add_time_period:
+    post:
+      summary: Add a new time period (for admin)
+      tags:
+        - Admin
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimePeriod'
+      responses:
+        '201':
+          description: Time period added successfully
+        '400':
+          description: Invalid request body
+  /admin/delete_time_period/{time_period_id}:
+    delete:
+      summary: Delete a time period (for admin)
+      tags:
+        - Admin
+      parameters:
+        - in: path
+          name: time_period_id
+          required: true
+          description: ID of the time period to delete
+          schema:
+            type: integer
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '204':
+          description: Time period deleted successfully
+        '404':
+          description: Time period not found
+  /admin/change_role/{user_id}:
+    put:
+      summary: Change user's role (for admin)
+      tags:
+        - Admin
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          description: ID of the user whose role will be changed
+          schema:
+            type: integer
+        - in: query
+          name: role_id
+          required: true
+          description: ID of the new role to assign to the user
+          schema:
+            type: integer
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: User's role changed successfully
+        '400':
+          description: Invalid role ID or user ID
+        '404':
+          description: User not found
+components:
+  schemas:
+    Internship:
+      type: object
+      properties:
+        id:
+          type: integer
+        company:
+          type: string
+          example: "Agoda"
+        position:
+          type: string
+          example: "Software Engineer"
+        skill_required:
+          type: string
+          example: "Python, GoLang, Ruby, JavaScript, bash, PowerShell"
+        website:
+          type: string
+          example: "https://careersatagoda.com/job/5418025-cooperative-internship-2024-software-engineer-intern-infrastructure/"
+        deadline:
+          type: string
+          format: date
+        time_period_id:
+          type: integer
+        author_id:
+          type: integer
+        flagged:
+          type: boolean
+          example: false
+        flagged_amount:
+          type: integer
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        role_id:
+          type: integer
+        gpa:
+          type: number
+        internship_time_period_id:
+          type: integer
+    TimePeriod:
+      type: object
+      properties:
+        name:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
