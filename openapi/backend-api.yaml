@@ -124,6 +124,25 @@ paths:
           description: Internship flagged successfully
         '404':
           description: Internship not found
+  /internships/unflag/{id}:
+    post:
+      summary: Unflag an internship
+      tags:
+        - Internship
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the internship to unflag
+          schema:
+            type: integer
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Internship unflagged successfully
+        '404':
+          description: Internship not found
   /internships/time_period/{time_period_id}:
     get:
       summary: Retrieve all internships for a given time period
