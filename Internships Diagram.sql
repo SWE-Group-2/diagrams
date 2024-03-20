@@ -1,14 +1,15 @@
 CREATE TABLE internships
 (
-    id             integer NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'internship id',
-    company        varchar(255) COMMENT 'Agoda',
-    position       varchar(255) COMMENT 'Backend, Frontend, Fullstack',
-    website        varchar(255) COMMENT 'www.agoda.com',
-    deadline       date COMMENT '2024-03-31 or NULL for no deadline',
-    time_period_id integer FOREIGN KEY REFERENCES time_periods(id),
-    author_id      integer FOREIGN KEY REFERENCES users(id),
-    flagged        boolean DEFAULT false COMMENT 'whether or not internship flagged',
-    created_at     timestamp DEFAULT CURRENT_TIMESTAMP COMMENT 'when internship object was created',
+    id                 integer NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'internship id',
+    company            varchar(255) COMMENT 'Agoda',
+    position           varchar(255) COMMENT 'Backend, Frontend, Fullstack',
+    website            varchar(255) COMMENT 'www.agoda.com',
+    deadline           date COMMENT '2024-03-31 or NULL for no deadline',
+    time_period_id     integer FOREIGN KEY REFERENCES time_periods(id),
+    author_id          integer FOREIGN KEY REFERENCES users(id),
+    company_photo_link varchar(255),
+    flagged            boolean   DEFAULT false COMMENT 'whether or not internship flagged',
+    created_at         timestamp DEFAULT CURRENT_TIMESTAMP COMMENT 'when internship object was created',
 );
 
 CREATE TABLE time_periods
@@ -39,6 +40,9 @@ CREATE TABLE users
     linkedin_link             varchar(255),
     website_link              varchar(255),
     phone_number              varchar(255),
+    profile_picture_link      varchar(255),
+    email                     varchar(255),
+    description               varchar(500),
     internship_time_period_id integer FOREIGN KEY REFERENCES time_periods(id),
 );
 
