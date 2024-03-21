@@ -1,14 +1,15 @@
 CREATE TABLE internships
 (
-    id             integer NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'internship id',
-    company        varchar(255) COMMENT 'Agoda',
-    position       varchar(255) COMMENT 'Backend, Frontend, Fullstack',
-    website        varchar(255) COMMENT 'www.agoda.com',
-    deadline       date COMMENT '2024-03-31 or NULL for no deadline',
-    time_period_id integer FOREIGN KEY REFERENCES time_periods(id),
-    author_id      integer FOREIGN KEY REFERENCES users(id),
-    flagged        boolean DEFAULT false COMMENT 'whether or not internship flagged',
-    created_at     timestamp DEFAULT CURRENT_TIMESTAMP COMMENT 'when internship object was created',
+    id                 integer      NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'internship id',
+    company            varchar(255) NOT NULL COMMENT 'Agoda',
+    position           varchar(255) NOT NULL COMMENT 'Backend, Frontend, Fullstack',
+    website            varchar(255) NOT NULL COMMENT 'www.agoda.com',
+    deadline           date         NOT NULL COMMENT '2024-03-31 or NULL for no deadline',
+    time_period_id     integer FOREIGN KEY REFERENCES time_periods(id),
+    author_id          integer FOREIGN KEY REFERENCES users(id),
+    company_photo_link varchar(255),
+    flagged            boolean   DEFAULT false COMMENT 'whether or not internship flagged',
+    created_at         timestamp DEFAULT CURRENT_TIMESTAMP COMMENT 'when internship object was created',
 );
 
 CREATE TABLE time_periods
@@ -22,16 +23,16 @@ CREATE TABLE time_periods
 CREATE TABLE roles
 (
     id   integer PRIMARY KEY COMMENT '1 for students',
-    role varchar(255) COMMENT 'student, admin, professor, recruiter'
+    role varchar(255) NOT NULL COMMENT 'student, admin, professor, recruiter'
 );
 
 CREATE TABLE users
 (
-    id                        integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    first_name                varchar(255),
-    last_name                 varchar(255),
-    username                  varchar(255),
-    password                  varchar(255) COMMENT 'hashed password',
+    id                        integer      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    first_name                varchar(255) NOT NULL,
+    last_name                 varchar(255) NOT NULL,
+    username                  varchar(255) NOT NULL,
+    password                  varchar(255) NOT NULL COMMENT 'hashed password',
     role_id                   integer DEFAULT 0 FOREIGN KEY REFERENCES roles(id),
     gpa                       float   DEFAULT null,
     academic_year             integer DEFAULT null,
@@ -39,6 +40,9 @@ CREATE TABLE users
     linkedin_link             varchar(255),
     website_link              varchar(255),
     phone_number              varchar(255),
+    profile_picture_link      varchar(255),
+    email                     varchar(255),
+    description               varchar(500),
     internship_time_period_id integer FOREIGN KEY REFERENCES time_periods(id),
 );
 
