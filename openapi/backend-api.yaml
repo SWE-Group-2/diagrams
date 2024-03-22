@@ -249,6 +249,28 @@ paths:
           description: Invalid request body
         '401':
           description: Unauthorized - user not logged in
+  /time_periods:
+    get:
+      summary: Get all time periods
+      tags:
+        - TimePeriod
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Time periods retrieved successfully
+  /time_periods/{time_period_id}:
+    get:
+      summary: Get a time period by ID
+      tags:
+        - TimePeriod
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Time period retrieved successfully
+        '404':
+          description: Time period not found
   /admin/statistics:
     get:
       summary: Get statistics (for admin)
@@ -312,6 +334,7 @@ paths:
       summary: Add a new time period (for admin)
       tags:
         - Admin
+        - TimePeriod
       security:
         - bearerAuth: [ ]
       requestBody:
@@ -330,6 +353,7 @@ paths:
       summary: Delete a time period (for admin)
       tags:
         - Admin
+        - TimePeriod
       parameters:
         - in: path
           name: time_period_id
